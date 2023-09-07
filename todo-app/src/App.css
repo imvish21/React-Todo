@@ -1,0 +1,149 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+html,body{
+  width:100%;
+  height:100%;
+  background-color:#1f1e1e;
+  color:white;
+  overflow:hidden;
+}
+h1{
+  text-align:center;
+  margin:1rem 0;
+}
+.todo-wrapper{
+    background: #353434;
+    padding: 2%;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0px 5px 7px rbg(27,27,27);
+
+}
+.todo-input{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom: 1px solid rbg(78,78,78);
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+
+}
+.todo-input-item{
+  display: flex;
+  flex-direction:column;
+  /* justify-content:center;
+  align-content:center; */
+  /* border:2px solid red; */
+  align-items:flex-start;
+  margin-right:25px;
+}
+.todo-input-item label{
+   font-weight:bold;
+   margin-bottom: 10px;
+
+}
+.todo-input-item input{
+  padding:8px;
+  border:none;
+  width:250px;
+}
+
+.todo-input-item input:focus{
+  outline:none;
+  outline:2px solid rgb(0,230,122);
+}
+.primary-Btn{
+  background-color: coral;
+  color:#fff;
+  font-size:15px;
+  border:none;
+  border-radius:20px;
+  margin-top:25px;
+  padding:10px;
+  width:60px;
+  cursor:pointer;
+}
+.primary-Btn:hover{
+  transform:scale(1.03);
+  background-color: rgb(0,210,100);
+}
+.btn-area{
+  margin-bottom:0.2rem;
+}
+.secondary-btn{
+  background-color: rgb(71,71,71);
+  color:#fff;
+  font-size:15px;
+  border:none;
+  /* border-radius:20px; */
+  margin-top:25px;
+  padding:10px;
+  width:fit-content;
+  /* margin-left:.2rem; */
+  cursor:pointer;
+}
+.active{
+  background-color: coral;
+}
+
+.todo-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.todo-list-item{
+  background-color: #414040;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 0.8rem;
+  margin-top:0.5rem;
+  margin-bottom:1.5rem;
+  box-shadow: 0px 2px 4px rgb(39, 38, 38);
+}
+.todo-list-item h3{
+  font-size: 25px;
+  color: rgb(0, 230, 122);
+  font-weight: bold;
+  margin: 0px;
+}
+
+.todo-list-item p{
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgb(179, 178, 178);
+
+}
+
+.icon{
+  font-size: 35px;
+  cursor: pointer;
+  /* padding:0.5rem; */
+  margin: 0.2rem 0.2rem;
+}
+
+.icon:hover{
+  color: red;
+  transform:scale(1.09);
+}
+
+.check-icon{
+  font-size: 35px;
+  font-weight:bold;
+  cursor: pointer;
+  color: rgb(0, 230, 122);
+  margin: 0.2rem 0.2rem;
+  /* padding:0.5rem; */
+}
+
+.check-icon:hover{
+  color: coral;
+  transform:scale(1.09);
+}
