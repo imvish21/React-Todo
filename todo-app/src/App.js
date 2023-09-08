@@ -1,6 +1,6 @@
 
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {AiOutlineDelete} from 'react-icons/ai';
 import {BsCheckLg} from 'react-icons/bs';
 
@@ -10,7 +10,40 @@ import {BsCheckLg} from 'react-icons/bs';
 
 
 function App() {
-  const [isComp,setIsComp] = useState(false); //false means todo page
+  const [isComp,setIsComp] = useState(false);  //false means todo page and true means completed page
+  const [allTodos,setTodos] = useState([]);
+  const [newTitle,setNewTitle] = useState("");
+  const [newDescription,setNewDescription] = useState("");
+
+  const handleAddTodo = () => {
+    let newTodoItem = {
+      title:newTitle,
+      description:newDescription,
+    }
+      
+    let updatedTodoArr = [...allTodos];
+    updatedTodoArr.push(newTodoItem);
+    setTodos(updatedTodoArr);
+    localStorage.setItem('todolist',JSON.stringify(updatedTodoArr))
+  }
+  const handleDelete = (index) => {
+    
+    let reduceTodo = [...allTodos];
+    reduceTodo.splice(index,1);
+    // localStorage.removeItem(index);
+    localStorage.setItem('todolist',JSON.stringify(reduceTodo));
+    setTodos(reduceTodo);
+    
+
+  }
+
+  useEffect(()=>{
+     let savedTodo = JSON.parse(localStorage.getItem('todolist'));
+     if(savedTodo)
+     {
+      setTodos(savedTodo);
+     }
+  },[])
   return (
     <div className="App">
       <h1>Get things done!!</h1>
@@ -19,14 +52,15 @@ function App() {
         <div className="todo-input">
           <div className="todo-input-item">
             <label>Title</label>
-            <input type="text" placeholder="Task title" />
+            <input type="text" value={newTitle} 
+            onChange={(e)=>setNewTitle(e.target.value)} placeholder="Task title" />
           </div>
           <div className="todo-input-item">
             <label>Description</label>
-            <input type="text" placeholder="Task description" />
+            <input type="text" input={newDescription} onChange={(e)=>setNewDescription(e.target.value)} placeholder="Task description" />
           </div>
           <div className="todo-input-item">
-            <button type="button" className="primary-Btn">
+            <button type="button" className="primary-Btn" onClick={handleAddTodo}>
               Add
             </button>
           </div>
@@ -40,17 +74,21 @@ function App() {
         </div>
 
         <div className="todo-list">
-          <div className="todo-list-item">
+          {allTodos.map((item,index)=>{
+            return(
+            <div className="todo-list-item" key={index}>
             <div>
-            <h3>Task 1</h3>
-            <p>Description is about task 1</p>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
             </div>
             <div>
-            <AiOutlineDelete className="icon" title="delete?"/>
+            <AiOutlineDelete className="icon" title="delete?" onClick={()=>handleDelete(index)}/>
             <BsCheckLg className="check-icon" title="Completed?"/>
             </div>
             
           </div>
+            )
+          })}
         </div>
       </div>
     </div>
