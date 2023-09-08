@@ -14,6 +14,7 @@ function App() {
   const [allTodos,setTodos] = useState([]);
   const [newTitle,setNewTitle] = useState("");
   const [newDescription,setNewDescription] = useState("");
+  const [completedTodos,setCompletedTodos] = useState([]);
 
   const handleAddTodo = () => {
     let newTodoItem = {
@@ -24,8 +25,21 @@ function App() {
     let updatedTodoArr = [...allTodos];
     updatedTodoArr.push(newTodoItem);
     setTodos(updatedTodoArr);
-    localStorage.setItem('todolist',JSON.stringify(updatedTodoArr))
+localStorage.setItem('todolist',JSON.stringify(updatedTodoArr))
+    setNewTitle("");
+    setNewDescription("");
   }
+
+  useEffect(()=>{
+    let savedTodo = JSON.parse(localStorage.getItem('todolist'));
+    if(savedTodo)
+    {
+     setTodos(savedTodo);
+    }
+ },[])
+
+   
+
   const handleDelete = (index) => {
     
     let reduceTodo = [...allTodos];
@@ -37,13 +51,46 @@ function App() {
 
   }
 
-  useEffect(()=>{
-     let savedTodo = JSON.parse(localStorage.getItem('todolist'));
-     if(savedTodo)
-     {
-      setTodos(savedTodo);
-     }
-  },[])
+  //completedtodos
+  const handleComplete = (index) => {
+    let now = new Date();
+    let dd = now.getDate();
+    let mm = now.getMonth() + 1;
+    let yyyy = now.getFullYear();
+    let h = now.getHours();
+    let m = now.getMinutes();
+    let s = now.getSeconds();
+    let completedon = dd + '-' + mm + '-' + yyyy + ' at ' + h + ':' + m + ':' + s;
+    let filteredItem = {
+      ...allTodos[index],
+      completedOn:completedon
+    }
+    let updatedCompletedArr = [...completedTodos];
+    updatedCompletedArr.push(filteredItem);
+    setCompletedTodos(updatedCompletedArr);
+    handleDelete(index);      
+    localStorage.setItem('completedTodos',JSON.stringify(updatedCompletedArr))
+   }
+
+   //completed todos delete function
+   const handleCompDelete = (index) => {
+    let reduceTodo = [...completedTodos];
+    reduceTodo.splice(index,1);
+    // localStorage.removeItem(index);
+    localStorage.setItem('completedTodos',JSON.stringify(reduceTodo));
+    setCompletedTodos(reduceTodo);
+   } 
+
+   useEffect(()=>{
+    let savedCompletedTodo = JSON.parse(localStorage.getItem('completedTodos'));
+    if(savedCompletedTodo)
+    {
+      setCompletedTodos(savedCompletedTodo);
+    }
+   },[])
+
+
+ //return for app components
   return (
     <div className="App">
       <h1>Get things done!!</h1>
@@ -57,7 +104,7 @@ function App() {
           </div>
           <div className="todo-input-item">
             <label>Description</label>
-            <input type="text" input={newDescription} onChange={(e)=>setNewDescription(e.target.value)} placeholder="Task description" />
+            <input type="text" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)} placeholder="Task description" />
           </div>
           <div className="todo-input-item">
             <button type="button" className="primary-Btn" onClick={handleAddTodo}>
@@ -74,7 +121,7 @@ function App() {
         </div>
 
         <div className="todo-list">
-          {allTodos.map((item,index)=>{
+          {isComp===false && allTodos.map((item,index)=>{
             return(
             <div className="todo-list-item" key={index}>
             <div>
@@ -83,12 +130,31 @@ function App() {
             </div>
             <div>
             <AiOutlineDelete className="icon" title="delete?" onClick={()=>handleDelete(index)}/>
-            <BsCheckLg className="check-icon" title="Completed?"/>
+            <BsCheckLg className="check-icon" title="Completed?" onClick={()=>handleComplete(index)}/>
             </div>
             
           </div>
             )
           })}
+
+       {/* //completed todo */}
+       {isComp===true && completedTodos.map((item,index)=>{
+            return(
+            <div className="todo-list-item" key={index}>
+            <div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <p>Completed On: {item.completedOn}</p>
+            </div>
+            <div>
+            <AiOutlineDelete className="icon" title="delete?" onClick={()=>handleCompDelete(index)}/>
+            </div>
+            
+          </div>
+            )
+          })}
+
+
         </div>
       </div>
     </div>
